@@ -3,6 +3,7 @@ import express, {Application,Request,Response} from "express";
 import cookieParser from "cookie-parser";
 
 import login from "./middlewares/login";
+import fetchData from "./middlewares/fetchData";
 
 const port = process.env.PORT || 5001
 
@@ -27,7 +28,7 @@ app.get("/",(req:Request,res:Response)=>{
     
 })
 
-app.get("/details",(req:Request,res:Response)=>{
+app.get("/details",fetchData,(req:Request,res:Response)=>{
     res.send(data)
 })
 
@@ -37,7 +38,7 @@ app.post("/login", (req:Request,res:Response)=>{
     if (name==="Moses" && password==="snowden"){
 
         const token =jwt.sign({name:"name",password:"password"},"secretkey",{ expiresIn:"10s"})
-        res.cookie("token",token,{httpOnly:true,maxAge:20000})
+        res.cookie("token",token,{httpOnly:true})
         res.sendStatus(201)
         
     }
